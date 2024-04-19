@@ -5270,7 +5270,9 @@ export class ColumnFilter implements AfterContentInit {
     overlayId: any;
 
     get fieldConstraints(): FilterMetadata[] | undefined | null {
-        return this.dt.filters ? <FilterMetadata[]>this.dt.filters[<string>this.field] : null;
+        let filter = this.dt.filters[<string>this.field];
+        if (!Array.isArray(filter)) filter = [filter];
+        return this.dt.filters ? <FilterMetadata[]>filter : null;
     }
 
     get showRemoveIcon(): boolean {
@@ -5471,7 +5473,9 @@ export class ColumnFilter implements AfterContentInit {
     }
 
     onOperatorChange(value: any) {
-        (<FilterMetadata[]>this.dt.filters[<string>this.field]).forEach((filterMeta) => {
+        let filter = this.dt.filters[<string>this.field];
+        if (!Array.isArray(filter)) filter = [filter];
+        (<FilterMetadata[]>filter).forEach((filterMeta) => {
             filterMeta.operator = value;
             this.operator = value;
         });
